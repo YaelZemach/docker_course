@@ -1,0 +1,9 @@
+version: "3.0"
+services:
+  devtoc:
+    image: yaelzemach/docker-exc-4:1.0
+    build: .
+    restart: on-failure
+    tty: true
+    volumes:
+      - ~/interview_coding_practice/week3:/gcc

@@ -1,0 +1,24 @@
+#create network
+docker network create wordpress-network
+#? output: ae02689cf27b99f141a4586209a0ab6ab0ab27577318abe513a0b0b3ed060d06
+
+#Run a MySQL container
+docker run -p3306:3306 -d --net wordpress-network -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_DATABASE=db -e MYSQL_USER=user -e MYSQL_PASSWORD=password --name mysql mysql
+#?output: Status: Downloaded newer image for mysql:latest 84efb72b3220eae7532925db55c7e360abf5ee1b00f68a28e039961042fc9b23
+
+#install mysql-client
+sudo apt-get install mysql-client
+#?output: ... Done
+
+#Check reach the DB from host machine
+mysql -h 127.0.0.1 -P 3306 -u root -p
+#?output: enter password...
+
+#Run Wordpress Container
+docker run -d -p8080:80 -e WORDPRESS_DB_HOST=mysql -e WORDPRESS_DB_USER=yael -e WORDPRESS_DB_PASSWORD=yael -e WORDPRESS_DB_NAME=wordpress --name wordpress wordpress
+#?output: 9012bc335d9354986e58ac59deb149a16ad46c517d90ace3db09d1ca68d7d424
+
+#check logs
+docker logs wordpress
+
+
