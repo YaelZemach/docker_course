@@ -1,7 +1,14 @@
-FROM gcc:4.9
+FROM debian:buster-slim
 RUN apt-get update -y
-RUN apt-get install git tar etc telnet curl -y
-WORKDIR /gcc
+RUN  apt-get install nodejs telnet curl -y
+RUN  apt-get install npm -y
+#ENV MONGO_DB_USERNAME=admin \
+#    MONGO_DB_PWD=password
+RUN mkdir -p /code/app
+WORKDIR /code/app
+COPY ./app ${WORKDIR}
 RUN cd  ${WORKDIR}
-EXPOSE 8000/tcp 
-# CMD ["/bin/bash"] 
+RUN npm  install
+EXPOSE 3000/tcp 
+#what to excute
+CMD ["node", "server.js"] 

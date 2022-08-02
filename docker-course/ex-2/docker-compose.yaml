@@ -1,43 +1,20 @@
-version: "3.0"
+version: "3.1"
 services:
-  mongodb:
-    image: mongo
+  wordpress:
+    image: wordpress
+    ports:
+      - 8080:80
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
-      # -PORT=3000 - another contexs
+       WORDPRESS_DB_HOST: mysql
+       WORDPRESS_DB_USER: yaelzemach
+       WORDPRESS_DB_NAME: wordpress
+       WORDPRESS_DB_PASSWORD: '1234'
+  mysql:
+    image: mysql:5.7
     ports:
-      - "27017:27017"
-    volumes:
-      - mongodb-data:/data/db
-  mongo-express:
-    image: mongo-express
-    ports:
-      - "8081:8081"
-    depends_on:
-      - mongodb
+      - 3305:3306
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: password
-      ME_CONFIG_MONGODB_SERVER: mongodb
-      ME_CONFIG_BASICAUTH_USERNAME: root
-      ME_CONFIG_BASICAUTH_PASSWORD: password
-    restart: always
-
-  myapp:
-    image: myapp:1.0
-    build: .
-    ports:
-      - "3000:3000"
-    restart: on-failure
-    depends_on:
-      - mongodb
-    environment: 
-      MONGO_SERVER: mongodb
-      MONGO_USER: root
-      MONGO_PASSWD: password
-      MONGO_PORT: 27017
-    network_mode: host
-volumes:
-  mongodb-data:
-    driver: local
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: yaelzemach
+       MYSQL_PASSWORD: '1234'
